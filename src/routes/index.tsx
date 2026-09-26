@@ -1,24 +1,89 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  ArrowDown, ArrowRight, BadgeCheck, Building2, Camera, Check,
+  ChevronRight, Flame, Gauge, Menu, MessageCircle, Phone, ShieldCheck,
+  Smartphone, Sparkles, Wrench, Zap,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+const whatsapp = "https://wa.me/573043179349";
+const fireImage = "https://lh3.googleusercontent.com/aida-public/AB6AXuBesBKua_CQ3MAcBhh6g1uBj4XLCsitHn9B5GBGg9ic78zOUZRgK5xEstV3BQC3N-_2QpReJIj6m_VWFZwgyic6IewvFN0zBm2PdF3JrItzRIZGary1FTptVYzCxq4gsW_5IdZcobW4AavNDlT3ln0iX2PSV8yzBSqwohv92VkFMQfanApJGMJdcYW1xEHHEj6Mp0G-5BZW1ClJkyAfRcDB0C3E0TSQpT-t5YgLDWrxHyHgYZ3kGan_Uw";
+const electricImage = "https://lh3.googleusercontent.com/aida-public/AB6AXuBZkePlWb7GcHffiMg_Ch-xPY6MwXNrSTJ1LQyca-evSTjV5MVQf1Pp49_co38653nHDdwxFLhmp92S22MwpjQXac0cIXOsXHCGVIEeYvis6bgrXRbq2Q6xmwZV-M444qxwiVKk4ab7bkcyBMOi-Pl_mhHeWlSwIVlH1Gcc8YHvVO_ovmg_MPiMLN4Nk7FRK04Z4wZ1e1a6c-NwvnryBa5sPcJuEC-Zq3-R8wh95dsbYqINFA8353Qrsw";
+const securityImage = "https://lh3.googleusercontent.com/aida-public/AB6AXuDL93EvmH9fqfXbRa1_qpmsE1mLeaDyAX-ijXsqEBgs2BgFxX_VL8-lmiQAet1EJtiXXsAOIv6_M1KU02H8c6A_AyU0JGsQhpUwlxaqwlXI-jrU04KxKhsiGbVFVARa7BDcuzA_3IYpYFDL6kLvqqTHOpl0DMrxFRe3hPWJeolduHIaubanYFJ7ihop_Ng1hfv44tV7sbp4qjgxzENgBdwXRF_qUWLGYBifq4Oyh156feLHdBhVjSNZ4w";
+
+const nav = [["Servicios", "#servicios"], ["Nosotros", "#nosotros"], ["Proceso", "#proceso"], ["Preguntas", "#preguntas"]];
+const services = [
+  { icon: Flame, label: "Especialidad", title: "Sistemas contraincendios", text: "Un sistema que no se prueba es una suposición, no una protección.", image: fireImage, items: ["Inspección y mantenimiento de paneles de detección y alarma", "Mantenimiento e inspección de bombas contraincendio", "Pruebas hidráulicas de redes, válvulas y gabinetes", "Informes técnicos y certificación según NFPA 25 / NFPA 72"], note: "KIDDE, BOSCH, SIMPLEX, INIM y otras marcas" },
+  { icon: Zap, label: "Certificado", title: "Instalaciones eléctricas", text: "Una instalación mal hecha no se nota hasta que falla.", image: electricImage, items: ["Instalación y reparación eléctrica residencial", "Instalación y reparación en locales comerciales", "Diagnóstico de fallas, cortos y sobrecargas", "Ampliación y actualización de tableros y circuitos"], note: "Mismo criterio técnico que en contraincendios" },
+  { icon: Camera, label: "Monitoreo", title: "Sistemas de seguridad", text: "No se trata solo de instalar una cámara, sino de que grabe lo que debe.", image: securityImage, items: ["Instalación y reparación de cámaras de vigilancia", "Instalación y reparación de alarmas", "Configuración de acceso remoto y grabación", "Mantenimiento preventivo de equipos existentes"], note: "Revisión desde tu celular, sin complicaciones" },
+];
+const faqs = [
+  ["¿Cada cuánto debo hacer mantenimiento a mi sistema contraincendios?", "Depende del equipo y la normativa aplicable. Como referencia general, la inspección visual es mensual y las pruebas funcionales son trimestrales o anuales según el componente. Te decimos exactamente qué le corresponde al tuyo."],
+  ["¿Atienden solo empresas o también viviendas?", "Ambos. Trabajamos instalaciones eléctricas y seguridad tanto en casas como en locales comerciales. Los sistemas contraincendios aplican principalmente a locales y empresas."],
+  ["¿Qué pasa si mi sistema no pasa la inspección?", "Te entregamos un informe con los hallazgos y las correcciones necesarias, y podemos encargarnos directamente de resolverlos."],
+  ["¿Hacen instalaciones nuevas o solo mantenimiento?", "Hacemos instalaciones eléctricas y de seguridad de forma directa. Para proyectos contraincendios de mayor escala, lideramos el diseño técnico y ejecutamos con instaladores certificados."],
+  ["¿En qué zonas trabajan?", "Medellín, el Valle de Aburrá y municipios del Oriente antioqueño como El Retiro, La Ceja y Guarne."],
+  ["¿Cuánto tardan en responder una cotización?", "Normalmente respondemos el mismo día hábil y coordinamos la visita de diagnóstico según tu disponibilidad."],
+];
+
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({ meta: [
+    { title: "GP Systems | Electricidad, seguridad y contraincendios en Medellín" },
+    { name: "description", content: "Instalación y mantenimiento de sistemas contraincendios, eléctricos y de seguridad en Medellín y el Oriente antioqueño." },
+    { property: "og:title", content: "GP Systems | Protección técnica que sí responde" },
+    { property: "og:description", content: "Electricidad, seguridad y sistemas contraincendios en Medellín." },
+    { property: "og:type", content: "website" },
+    { name: "twitter:card", content: "summary_large_image" },
+    { property: "og:image", content: fireImage },
+    { name: "twitter:image", content: fireImage },
+  ]}),
+  component: HomePage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+function Logo({ inverse = false }: { inverse?: boolean }) {
+  return <a href="#inicio" className="flex items-center gap-3" aria-label="GP Systems, inicio"><span className={`grid size-10 place-items-center rounded-sm ${inverse ? "bg-primary-foreground text-ink" : "bg-ink text-primary-foreground"}`}><ShieldCheck className="size-6" /></span><span className={`font-display text-lg font-extrabold leading-none ${inverse ? "text-primary-foreground" : "text-foreground"}`}>GP <span className="text-signal">SYSTEMS</span></span></a>;
+}
+
+function Header() {
+  return <header className="absolute inset-x-0 top-0 z-30 border-b border-primary-foreground/20 text-primary-foreground"><div className="container-site flex h-20 items-center justify-between"><Logo inverse /><nav className="hidden items-center gap-8 lg:flex">{nav.map(([label, href]) => <a key={href} href={href} className="text-sm font-semibold transition-opacity hover:opacity-70">{label}</a>)}<Button asChild variant="light"><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle />Cotizar ahora</a></Button></nav><Sheet><SheetTrigger asChild><Button variant="outlineLight" size="icon" className="lg:hidden" aria-label="Abrir menú"><Menu /></Button></SheetTrigger><SheetContent className="bg-background"><SheetHeader><SheetTitle><Logo /></SheetTitle><SheetDescription>Servicios técnicos en Medellín y alrededores.</SheetDescription></SheetHeader><nav className="mt-10 grid gap-1">{nav.map(([label, href]) => <SheetClose asChild key={href}><a href={href} className="border-b border-border py-4 font-display text-xl font-bold">{label}</a></SheetClose>)}<Button asChild variant="signal" size="xl" className="mt-6"><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle />Solicitar cotización</a></Button></nav></SheetContent></Sheet></div></header>;
+}
+
+function SectionHead({ eyebrow, title, text, light = false }: { eyebrow: string; title: string; text?: string; light?: boolean }) {
+  return <div className="max-w-2xl"><p className={`mb-4 text-xs font-bold uppercase tracking-[0.18em] ${light ? "text-accent" : "text-signal"}`}>{eyebrow}</p><h2 className={`text-3xl font-extrabold leading-tight sm:text-4xl lg:text-5xl ${light ? "text-primary-foreground" : "text-foreground"}`}>{title}</h2>{text && <p className={`mt-5 leading-7 ${light ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{text}</p>}</div>;
+}
+
+function HomePage() {
+  return <main id="inicio">
+    <section className="relative min-h-[760px] overflow-hidden bg-ink text-primary-foreground">
+      <img src={fireImage} alt="Equipos de un sistema contraincendios" className="absolute inset-0 h-full w-full object-cover opacity-45" />
+      <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/15" />
+      <Header />
+      <div className="container-site relative z-10 flex min-h-[760px] items-end pb-20 pt-36 lg:items-center lg:pb-0"><div className="max-w-3xl animate-reveal"><div className="mb-7 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.16em] text-accent"><span className="h-px w-10 bg-accent" />Medellín · Valle de Aburrá · Oriente</div><h1 className="text-5xl font-extrabold leading-[1.02] sm:text-6xl lg:text-7xl">Protección técnica<br />que <span className="text-accent">sí responde.</span></h1><p className="mt-7 max-w-2xl text-lg leading-8 text-primary-foreground/80">Instalamos, reparamos y mantenemos sistemas eléctricos, de seguridad y contraincendios para tu casa o negocio.</p><div className="mt-9 flex flex-col gap-3 sm:flex-row"><Button asChild variant="signal" size="xl"><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle />Solicita tu cotización</a></Button><Button asChild variant="outlineLight" size="xl"><a href="#servicios">Ver servicios <ArrowDown /></a></Button></div><p className="mt-6 flex items-center gap-2 text-sm text-primary-foreground/60"><BadgeCheck className="size-4 text-accent" />Respondemos el mismo día hábil, sin compromiso.</p></div></div>
+      <div className="absolute bottom-0 right-0 hidden w-[34%] border-l border-t border-primary-foreground/20 bg-ink/70 px-8 py-6 backdrop-blur-sm lg:block"><div className="grid grid-cols-3 gap-4 text-sm"><span><strong className="block text-2xl text-accent">NFPA</strong>25 / 72</span><span><strong className="block text-2xl text-accent">3</strong>especialidades</span><span><strong className="block text-2xl text-accent">1 día</strong>de respuesta</span></div></div>
+    </section>
+
+    <section id="nosotros" className="border-b border-border bg-card py-20 lg:py-28"><div className="container-site grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start"><SectionHead eyebrow="Por qué GP Systems" title="Un solo equipo. Cero puntos ciegos." text="Abordamos cada sistema con el mismo criterio: encontrar el riesgo, explicarlo con claridad y resolverlo con respaldo técnico." /><div className="grid gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2">{[[Flame,"Especialistas","Paneles y bombas contraincendios de múltiples marcas."],[Wrench,"Solución integral","Eléctrico, seguridad y protección con un solo proveedor."],[BadgeCheck,"Informes técnicos","Documentación útil para auditorías y cumplimiento."],[MessageCircle,"Atención directa","Hablas con el equipo técnico, sin intermediarios."]].map(([Icon,title,text]) => { const FeatureIcon = Icon as typeof Flame; return <article key={String(title)} className="bg-card p-7"><FeatureIcon className="mb-5 size-6 text-signal" /><h3 className="text-lg font-bold">{String(title)}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{String(text)}</p></article>})}</div></div></section>
+
+    <section className="overflow-hidden border-b border-border bg-warm py-5"><div className="flex w-max animate-ticker items-center gap-12 pr-12 font-display text-lg font-extrabold text-muted-foreground/60">{Array.from({length: 4}).flatMap((_,i) => ["KIDDE","BOSCH","SIMPLEX","INIM","FIRELITE","POTTER"].map(name => <span key={`${i}-${name}`} className="flex items-center gap-12">{name}<span className="size-1.5 rounded-full bg-signal" /></span>))}</div></section>
+
+    <section className="bg-ink py-20 text-primary-foreground lg:py-28"><div className="container-site"><div className="grid gap-12 lg:grid-cols-[1.25fr_0.75fr]"><div><p className="mb-4 text-xs font-bold uppercase tracking-[0.18em] text-accent">¿Te suena familiar?</p><h2 className="max-w-4xl text-4xl font-extrabold leading-tight sm:text-5xl">¿Cuándo fue la última vez que revisaste tu sistema?</h2><p className="mt-7 max-w-3xl text-lg leading-8 text-primary-foreground/65">Las fallas graves suelen descubrirse en la inspección que nunca se hizo. Encontramos esos riesgos antes de que se conviertan en un problema real y te decimos exactamente qué hacer.</p></div><div className="grid grid-cols-2 gap-px self-end bg-primary-foreground/20">{[["4+","marcas de paneles"],["9","municipios cubiertos"],["1","día hábil de respuesta"],["3","especialidades"]].map(([n,t]) => <div key={t} className="bg-ink p-5"><strong className="font-display text-4xl text-accent">{n}</strong><span className="mt-2 block text-xs text-primary-foreground/55">{t}</span></div>)}</div></div></div></section>
+
+    <section id="servicios" className="py-20 lg:py-28"><div className="container-site"><SectionHead eyebrow="Nuestros servicios" title="Tres líneas, un mismo estándar técnico" text="Diagnóstico claro, trabajo prolijo y soporte documentado en cada intervención." /><div className="mt-14 grid gap-6 lg:grid-cols-3">{services.map(({icon:Icon,...s}) => <article key={s.title} className="group overflow-hidden rounded-sm border border-border bg-card"><div className="relative aspect-[4/3] overflow-hidden"><img src={s.image} alt={s.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-ink/70 to-transparent" /><span className="absolute bottom-4 left-4 flex items-center gap-2 bg-signal px-3 py-2 text-xs font-bold uppercase text-signal-foreground"><Icon className="size-4" />{s.label}</span></div><div className="p-6"><h3 className="text-2xl font-extrabold">{s.title}</h3><p className="mt-3 min-h-12 text-sm leading-6 text-muted-foreground">{s.text}</p><Accordion type="single" collapsible className="mt-5"><AccordionItem value="details"><AccordionTrigger className="font-bold text-foreground hover:no-underline">Ver qué incluye</AccordionTrigger><AccordionContent><ul className="space-y-3">{s.items.map(item => <li key={item} className="flex gap-2 text-sm leading-5 text-muted-foreground"><Check className="mt-0.5 size-4 shrink-0 text-signal" />{item}</li>)}</ul></AccordionContent></AccordionItem></Accordion><p className="mt-5 border-t border-border pt-4 text-xs font-semibold text-muted-foreground">{s.note}</p></div></article>)}</div></div></section>
+
+    <section className="border-y border-border bg-card py-20 lg:py-28"><div className="container-site"><SectionHead eyebrow="Antes de decidir" title="Aprende un poco más" text="Información útil para entender qué necesita tu sistema, sin tecnicismos innecesarios." /><div className="mt-12 grid gap-px overflow-hidden rounded-sm border border-border bg-border md:grid-cols-2">{[[Gauge,"¿Qué es una prueba hidráulica?","Verifica que redes, válvulas y gabinetes mantengan la presión y el caudal necesarios para una emergencia real."],[Zap,"Señales de una instalación en riesgo","Breakers que se disparan, tomas calientes, luces que parpadean o un tablero antiguo merecen una revisión."],[Camera,"Qué cámara conviene según el espacio","Interiores, exteriores y accesos requieren distintos alcances, visión nocturna y opciones de grabación."],[Flame,"Qué revisa una bomba contraincendio","Arranque, presión de trabajo, motor, panel de control y posibles fugas: todo debe responder en conjunto."]].map(([Icon,title,text]) => { const EduIcon = Icon as typeof Gauge; return <article key={String(title)} className="bg-card p-7 sm:p-9"><span className="mb-8 grid size-11 place-items-center bg-muted text-signal"><EduIcon /></span><h3 className="text-xl font-bold">{String(title)}</h3><p className="mt-3 text-sm leading-6 text-muted-foreground">{String(text)}</p></article>})}</div></div></section>
+
+    <section id="proceso" className="py-20 lg:py-28"><div className="container-site"><SectionHead eyebrow="Cómo trabajamos" title="Un proceso claro, de principio a fin" /><div className="relative mt-14 grid gap-8 md:grid-cols-5 md:gap-4"><div className="absolute left-[10%] right-[10%] top-6 hidden h-px bg-border md:block" />{[["01","Contacto","Nos cuentas qué necesitas por WhatsApp o llamada."],["02","Diagnóstico","Revisamos y explicamos claramente lo que encontramos."],["03","Cotización","Recibes un presupuesto detallado, sin letra pequeña."],["04","Ejecución","Hacemos el trabajo con estándares técnicos."],["05","Respaldo","Entregamos documentación y soporte."]].map(([n,t,d]) => <article key={n} className="relative"><span className="relative z-10 grid size-12 place-items-center rounded-full border border-border bg-background font-display text-sm font-bold text-signal">{n}</span><h3 className="mt-5 font-bold">{t}</h3><p className="mt-2 text-sm leading-6 text-muted-foreground">{d}</p></article>)}</div></div></section>
+
+    <section className="bg-secondary py-20 text-secondary-foreground lg:py-24"><div className="container-site grid gap-12 lg:grid-cols-[0.8fr_1.2fr]"><SectionHead eyebrow="Zona de cobertura" title="Estamos cerca cuando importa" text="Servicio en Medellín, el Valle de Aburrá y el Oriente antioqueño." light /><div className="grid grid-cols-2 gap-3 sm:grid-cols-3">{["Medellín","Bello","Envigado","Itagüí","Sabaneta","La Estrella","El Retiro","La Ceja","Guarne"].map(place => <div key={place} className="flex items-center gap-3 border border-secondary-foreground/20 p-4 text-sm font-semibold"><ChevronRight className="size-4 text-accent" />{place}</div>)}</div></div></section>
+
+    <section id="preguntas" className="py-20 lg:py-28"><div className="container-site grid gap-14 lg:grid-cols-[0.75fr_1.25fr]"><div><SectionHead eyebrow="Preguntas frecuentes" title="Lo que más nos preguntan" /><Button asChild variant="signal" size="xl" className="mt-8"><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle />Hablemos de tu caso</a></Button></div><Accordion type="single" collapsible className="border-t border-border">{faqs.map(([q,a],i) => <AccordionItem value={`faq-${i}`} key={q}><AccordionTrigger className="py-6 text-base font-bold hover:no-underline">{q}</AccordionTrigger><AccordionContent className="max-w-2xl pb-6 leading-7 text-muted-foreground">{a}</AccordionContent></AccordionItem>)}</Accordion></div></section>
+
+    <section className="bg-signal py-16 text-signal-foreground"><div className="container-site flex flex-col justify-between gap-8 lg:flex-row lg:items-center"><div><p className="text-xs font-bold uppercase tracking-[0.18em] opacity-70">¿Listo para empezar?</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Cuéntanos qué necesitas.</h2><p className="mt-3 max-w-xl opacity-80">Te respondemos con los próximos pasos el mismo día hábil.</p></div><Button asChild variant="light" size="xl"><a href={whatsapp} target="_blank" rel="noreferrer"><MessageCircle />Escribir por WhatsApp <ArrowRight /></a></Button></div></section>
+
+    <footer className="bg-ink py-14 text-primary-foreground"><div className="container-site"><div className="grid gap-10 border-b border-primary-foreground/15 pb-12 md:grid-cols-3"><div><Logo inverse /><p className="mt-5 max-w-xs text-sm leading-6 text-primary-foreground/55">Electricidad, seguridad y protección contra incendios con criterio técnico.</p></div><div><p className="font-display font-bold">Contacto</p><a href={whatsapp} className="mt-4 flex items-center gap-2 text-sm text-primary-foreground/65 hover:text-primary-foreground"><Phone className="size-4" />+57 304 317 9349</a><p className="mt-3 flex items-center gap-2 text-sm text-primary-foreground/65"><Building2 className="size-4" />Medellín, Antioquia</p></div><div><p className="font-display font-bold">Especialidades</p><div className="mt-4 flex flex-wrap gap-2">{["Contraincendios","Eléctrico","CCTV","Alarmas"].map(x => <span key={x} className="border border-primary-foreground/15 px-3 py-2 text-xs text-primary-foreground/60">{x}</span>)}</div></div></div><div className="flex flex-col justify-between gap-4 pt-7 text-xs text-primary-foreground/40 sm:flex-row"><p>© 2026 GP Systems. Todos los derechos reservados.</p><p className="flex items-center gap-2"><Sparkles className="size-3" />Seguridad que se comprueba</p></div></div></footer>
+
+    <Button asChild variant="signal" size="icon" className="fixed bottom-5 right-5 z-30 size-12 rounded-full shadow-lg md:hidden"><a href={whatsapp} target="_blank" rel="noreferrer" aria-label="Escribir por WhatsApp"><Smartphone /></a></Button>
+  </main>;
 }
